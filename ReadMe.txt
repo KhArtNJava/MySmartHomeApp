@@ -1,0 +1,1 @@
+This app requires two https://github.com/videolan/libvlcsharp components: https://www.nuget.org/packages/VideoLAN.LibVLC.Windows/ to working functional and https://www.nuget.org/packages/LibVLCSharp.Forms/ for MS VS 2019 form editor.
