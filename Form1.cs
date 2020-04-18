@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Onvif;
 using System.Threading;
+using Timer = System.Timers.Timer;
+using System.Timers;
 
 namespace MySmartHomeApp
 {
@@ -32,28 +34,37 @@ namespace MySmartHomeApp
             videoView1.MediaPlayer = _mp;
             Load += Form1_Load;
 
-        
+            _mp.EnableMouseInput = false;
 
         }
 
         private void videoView1_Click(object sender, EventArgs e)
         {
+
+            OnvifCls.testPzt(serviceUrl);
             Console.WriteLine();
         }
 
-        public int runMe(string rtspUrl)
+        string serviceUrl = "";
+
+        public int runMe(string rtspUrl, string serviceUrl )
         {
             //Console.WriteLine(rtspUrl);
 
+            this.serviceUrl = serviceUrl;
 
             //_mp.Play(new Media(_libVLC, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", FromType.FromLocation));
             //_mp.Play(new Media(_libVLC, "rtsp://admin:q1234567@192.168.31.12:554/onvif1", FromType.FromLocation));
             _mp.Play(new Media(_libVLC, rtspUrl, FromType.FromLocation));
 
+            _mp.EnableMouseInput = false;
+
             return 0;
         }
 
         bool alreadyLoaded = false;
+        private static Timer loopTimer = new Timer();
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -64,12 +75,27 @@ namespace MySmartHomeApp
                 alreadyLoaded = true;
             }
 
-            //while (o.rtspUrl == null)
-            //{
-            //    Thread.Sleep(10);
-            //}
-            //var rtspUrl = o.rtspUrl;
 
+            loopTimer.Interval = 500; //interval in milliseconds
+            loopTimer.Enabled = false;
+            loopTimer.Elapsed += loopTimerEvent;
+            loopTimer.AutoReset = true;
+
+        }
+
+        private static void loopTimerEvent(Object source, ElapsedEventArgs e)
+        {
+            //this does whatever you want to happen while clicking on the button
+        }
+
+        private void videoView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            loopTimer.Enabled = true;
+        }
+
+        private void videoView1_MouseUp(object sender, MouseEventArgs e)
+        {
+            loopTimer.Enabled = false;
         }
     }
 }

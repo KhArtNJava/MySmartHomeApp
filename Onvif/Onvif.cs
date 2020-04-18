@@ -16,14 +16,13 @@ namespace Onvif
 {
     public class OnvifCls
     {
-        Func<string, int> callbackFunctionLocal;
+        Func<string, string, int> callbackFunctionLocal;
 
-        public OnvifCls(Func<string, int> callbackFunction)
+        public OnvifCls(Func<string, string, int> callbackFunction)
         {
             this.callbackFunctionLocal = callbackFunction;
         }
 
-        //public string rtspUrl = null;
 
         public void getRtspUrl()
         {
@@ -52,12 +51,14 @@ namespace Onvif
             //return rtspUrl;
         }
 
+        string serviceUrl = "";
+
         void discoveryClient_FindProgressChanged(object sender, FindProgressChangedEventArgs e)
         {
             var a = e.EndpointDiscoveryMetadata;
             var b = e.MessageSequence;
 
-            var c = a.ListenUris[0].ToString();
+            serviceUrl = a.ListenUris[0].ToString();
             //var c = "http://192.168.31.12:5000/onvif/device_service";
 
             System.Net.ServicePointManager.Expect100Continue = false;
@@ -72,7 +73,7 @@ namespace Onvif
                  l_CustomBinding.Elements.Find<MessageEncodingBindingElement>();
             l_EncodingElement.MessageVersion = MessageVersion.Soap12;
 
-            EndpointAddress endpointAddress = new EndpointAddress(c);
+            EndpointAddress endpointAddress = new EndpointAddress(serviceUrl);
 
             //HttpTransportBindingElement transport = new HttpTransportBindingElement();
             //transport.MaxReceivedMessageSize = Int32.MaxValue; //100L * 1024L * 1024L
@@ -124,9 +125,55 @@ namespace Onvif
             var rtspPort = profiles[0].VideoEncoderConfiguration.Multicast.Port;
             var rtspUrl = "rtsp://admin:q1234567@" + rtspIP + ":" + rtspPort + "/onvif1";
 
-            callbackFunctionLocal.DynamicInvoke(new object[] { rtspUrl });
+            callbackFunctionLocal.DynamicInvoke(new object[] { rtspUrl, serviceUrl });
 
             Console.WriteLine();
+        }
+
+        public static void testPzt(string serviceUrl)
+        {
+
+            System.Net.ServicePointManager.Expect100Continue = false;
+
+            var wsBinding = new WSHttpBinding(SecurityMode.None);
+            wsBinding.Name = "My WSHttpBinding";
+
+            wsBinding.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;
+
+            CustomBinding l_CustomBinding = new CustomBinding(wsBinding);
+            MessageEncodingBindingElement l_EncodingElement =
+                 l_CustomBinding.Elements.Find<MessageEncodingBindingElement>();
+            l_EncodingElement.MessageVersion = MessageVersion.Soap12;
+
+            EndpointAddress endpointAddress = new EndpointAddress(serviceUrl);
+
+            PTZClient cl = new PTZClient(l_CustomBinding, endpointAddress);
+            
+            PTZSpeed velocity = new PTZSpeed();
+            velocity.PanTilt = new Vector2D();
+            velocity.PanTilt.x = -0.5f;
+            velocity.PanTilt.y = 0f;
+
+            cl.ContinuousMove("IPCProfilesToken0", velocity, "1");
+
+
+
+            //DeviceClient cl = new ServiceReference1.DeviceClient(l_CustomBinding, endpointAddress);
+            //GetDeviceInformationRequest inValue = new GetDeviceInformationRequest();
+            //string Model; string FirmwareVersion; string SerialNumber; string HardwareId;
+            //var Q = cl.GetDeviceInformation(out Model, out FirmwareVersion, out SerialNumber, out HardwareId);
+
+            //var cl2 = new MediaClient(l_CustomBinding, endpointAddress);
+            //var profiles = cl2.GetProfiles();
+
+            //var rtspIP = profiles[0].VideoEncoderConfiguration.Multicast.Address.IPv4Address;
+            //var rtspPort = profiles[0].VideoEncoderConfiguration.Multicast.Port;
+            //var rtspUrl = "rtsp://admin:q1234567@" + rtspIP + ":" + rtspPort + "/onvif1";
+
+            //callbackFunctionLocal.DynamicInvoke(new object[] { rtspUrl, serviceUrl });
+
+            Console.WriteLine();
+
         }
 
         void discoveryClient_FindCompleted(object sender, FindCompletedEventArgs e)

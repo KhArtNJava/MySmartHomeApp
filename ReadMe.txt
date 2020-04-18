@@ -3,6 +3,9 @@ This app requires two https://github.com/videolan/libvlcsharp components: https:
 Onvif Service protocol located in ./ThirdParty/Specifications/ .
 The main WSDL file of Onvif service: ./Onvif/Connected Services/ServiceReference1/onvif.wsdl
 
+Filter for Wireshark:
+ip.src == 192.168.31.12 || ip.dst == 192.168.31.12 || ip.src == 192.168.31.14
+
 
 See also:
 

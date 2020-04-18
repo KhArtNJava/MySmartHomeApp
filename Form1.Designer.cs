@@ -45,6 +45,8 @@
             this.videoView1.TabIndex = 0;
             this.videoView1.Text = "videoView1";
             this.videoView1.Click += new System.EventHandler(this.videoView1_Click);
+            this.videoView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.videoView1_MouseDown);
+            this.videoView1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.videoView1_MouseUp);
             // 
             // Form1
             // 
