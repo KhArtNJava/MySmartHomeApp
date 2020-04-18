@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySmartHomeApp", "MySmartHomeApp.csproj", "{4842B4C0-6431-4A87-A257-6A78B4DB56DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Onvif", "..\Onvif\Onvif.csproj", "{3F182356-906B-42F3-BFB4-35B04476D8E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Onvif", "Onvif\Onvif.csproj", "{3F182356-906B-42F3-BFB4-35B04476D8E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

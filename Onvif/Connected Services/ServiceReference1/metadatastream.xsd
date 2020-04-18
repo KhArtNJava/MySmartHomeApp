@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:wsnt="http://docs.oasis-open.org/wsn/b-2" xmlns:tt="http://www.onvif.org/ver10/schema" xmlns:bd="http://www.onvif.org/ver20/analytics/humanbody" xmlns:fc="http://www.onvif.org/ver20/analytics/humanface" elementFormDefault="qualified" targetNamespace="http://www.onvif.org/ver10/schema" version="19.12" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="common.xsd" />
+  <xs:import schemaLocation="http://docs.oasis-open.org/wsn/b-2.xsd" namespace="http://docs.oasis-open.org/wsn/b-2" />
+  <xs:import schemaLocation="../../ver20/analytics/humanface.xsd" namespace="http://www.onvif.org/ver20/analytics/humanface" />
+  <xs:import schemaLocation="../../ver20/analytics/humanbody.xsd" namespace="http://www.onvif.org/ver20/analytics/humanbody" />
+  <xs:complexType name="Appearance">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Transformation" type="tt:Transformation" />
+      <xs:element minOccurs="0" name="Shape" type="tt:ShapeDescriptor" />
+      <xs:element minOccurs="0" name="Color" type="tt:ColorDescriptor" />
+      <xs:element minOccurs="0" name="Class" type="tt:ClassDescriptor" />
+      <xs:element minOccurs="0" name="Extension" type="tt:AppearanceExtension" />
+      <xs:element minOccurs="0" name="GeoLocation" type="tt:GeoLocation" />
+      <xs:element minOccurs="0" name="VehicleInfo" type="tt:VehicleInfo" />
+      <xs:element minOccurs="0" name="LicensePlateInfo" type="tt:LicensePlateInfo" />
+      <xs:element minOccurs="0" name="HumanFace" type="fc:HumanFace" />
+      <xs:element minOccurs="0" name="HumanBody" type="bd:HumanBody" />
+      <xs:element minOccurs="0" name="ImageRef" type="xs:anyURI" />
+      <xs:element minOccurs="0" name="Image" type="xs:base64Binary" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="AppearanceExtension">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="VehicleType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Bus" />
+      <xs:enumeration value="Car" />
+      <xs:enumeration value="Truck" />
+      <xs:enumeration value="Bicycle" />
+      <xs:enumeration value="Motorcycle" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PlateType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Normal" />
+      <xs:enumeration value="Police" />
+      <xs:enumeration value="Diplomat" />
+      <xs:enumeration value="Temporary" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="VehicleInfo">
+    <xs:sequence>
+      <xs:element name="Type" type="tt:StringLikelihood" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Brand" type="tt:StringLikelihood" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Model" type="tt:StringLikelihood" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="LicensePlateInfo">
+    <xs:sequence>
+      <xs:element name="PlateNumber" type="tt:StringLikelihood">
+        <xs:annotation>
+          <xs:documentation>A string of vehicle license plate number.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="PlateType" type="tt:StringLikelihood">
+        <xs:annotation>
+          <xs:documentation>A description of the vehicle license plate, e.g., "Normal", "Police", "Diplomat"</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="CountryCode" type="tt:StringLikelihood">
+        <xs:annotation>
+          <xs:documentation>Describe the country of the license plate, in order to avoid the same license plate number.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" maxOccurs="1" name="IssuingEntity" type="tt:StringLikelihood">
+        <xs:annotation>
+          <xs:documentation>State province or authority that issue the license plate.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="ShapeDescriptor">
+    <xs:sequence>
+      <xs:element name="BoundingBox" type="tt:Rectangle" />
+      <xs:element name="CenterOfGravity" type="tt:Vector" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Polygon" type="tt:Polygon" />
+      <xs:element minOccurs="0" name="Extension" type="tt:ShapeDescriptorExtension" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="ShapeDescriptorExtension">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="ObjectType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Animal" />
+      <xs:enumeration value="HumanFace" />
+      <xs:enumeration value="Human" />
+      <xs:enumeration value="Bicycle" />
+      <xs:enumeration value="Vehicle" />
+      <xs:enumeration value="LicensePlate" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ClassType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Animal" />
+      <xs:enumeration value="Face" />
+      <xs:enumeration value="Human" />
+      <xs:enumeration value="Vehical" />
+      <xs:enumeration value="Other" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="StringLikelihood">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="Likelihood" type="xs:float" />
+        <xs:anyAttribute processContents="lax" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="ClassDescriptor">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ClassCandidate">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Type" type="tt:ClassType" />
+            <xs:element name="Likelihood" type="xs:float" />
+            <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="Extension" type="tt:ClassDescriptorExtension" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Type" type="tt:StringLikelihood">
+        <xs:annotation>
+          <xs:documentation>ONVIF recommends to use this 'Type' element instead of 'ClassCandidate' and 'Extension' above for new design. Acceptable values are defined in tt:ObjectType.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ClassDescriptorExtension">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax" />
+      <xs:element maxOccurs="unbounded" name="OtherTypes" type="tt:OtherType" />
+      <xs:element minOccurs="0" name="Extension" type="tt:ClassDescriptorExtension2" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ClassDescriptorExtension2">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##targetNamespace" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="OtherType">
+    <xs:sequence>
+      <xs:element name="Type" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>Object Class Type</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Likelihood" type="xs:float">
+        <xs:annotation>
+          <xs:documentation>A likelihood/probability that the corresponding object belongs to this class. The sum of the likelihoods shall NOT exceed 1</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="Object">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tt:ObjectId">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Appearance" type="tt:Appearance" />
+          <xs:element minOccurs="0" name="Behaviour" type="tt:Behaviour" />
+          <xs:element minOccurs="0" name="Extension" type="tt:ObjectExtension" />
+          <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+        </xs:sequence>
+        <xs:attribute name="Parent" type="xs:integer">
+          <xs:annotation>
+            <xs:documentation>Object ID of the parent object. eg: License plate object has Vehicle object as parent.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:anyAttribute processContents="lax" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ObjectExtension">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Frame">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="PTZStatus" type="tt:PTZStatus" />
+      <xs:element minOccurs="0" name="Transformation" type="tt:Transformation" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Object" type="tt:Object" />
+      <xs:element minOccurs="0" name="ObjectTree" type="tt:ObjectTree" />
+      <xs:element minOccurs="0" name="Extension" type="tt:FrameExtension" />
+      <xs:element minOccurs="0" name="SceneImageRef" type="xs:anyURI" />
+      <xs:element minOccurs="0" name="SceneImage" type="xs:base64Binary" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+    <xs:attribute name="UtcTime" type="xs:dateTime" use="required" />
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="FrameExtension">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax" />
+      <xs:element minOccurs="0" name="MotionInCells" type="tt:MotionInCells" />
+      <xs:element minOccurs="0" name="Extension" type="tt:FrameExtension2" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="FrameExtension2">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##targetNamespace" processContents="lax" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Merge">
+    <xs:sequence>
+      <xs:element minOccurs="2" maxOccurs="unbounded" name="from" type="tt:ObjectId" />
+      <xs:element name="to" type="tt:ObjectId" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Split">
+    <xs:sequence>
+      <xs:element name="from" type="tt:ObjectId" />
+      <xs:element minOccurs="2" maxOccurs="unbounded" name="to" type="tt:ObjectId" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Rename">
+    <xs:sequence>
+      <xs:element name="from" type="tt:ObjectId" />
+      <xs:element name="to" type="tt:ObjectId" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ObjectId">
+    <xs:attribute name="ObjectId" type="xs:integer" />
+  </xs:complexType>
+  <xs:complexType name="Behaviour">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Removed">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="Idle">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="Extension" type="tt:BehaviourExtension" />
+      <xs:element minOccurs="0" name="Speed" type="xs:float" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="BehaviourExtension">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ObjectTree">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Rename" type="tt:Rename" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Split" type="tt:Split" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Merge" type="tt:Merge" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Delete" type="tt:ObjectId" />
+      <xs:element minOccurs="0" name="Extension" type="tt:ObjectTreeExtension" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="ObjectTreeExtension">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="MotionInCells">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+    <xs:attribute name="Columns" type="xs:integer" use="required">
+      <xs:annotation>
+        <xs:documentation>Number of columns of the cell grid (x dimension)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Rows" type="xs:integer" use="required">
+      <xs:annotation>
+        <xs:documentation>Number of rows of the cell grid (y dimension)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Cells" type="xs:base64Binary" use="required">
+      <xs:annotation>
+        <xs:documentation>A ???1??? denotes a cell where motion is detected and a ???0??? an empty cell. The first cell is in the upper left corner. Then the cell order goes first from left to right and then from up to down.  If the number of cells is not a multiple of 8 the last byte is filled with zeros. The information is run length encoded according to Packbit coding in ISO 12369 (TIFF, Revision 6.0).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="MetadataStream">
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="VideoAnalytics" type="tt:VideoAnalyticsStream" />
+        <xs:element name="PTZ" type="tt:PTZStream" />
+        <xs:element name="Event" type="tt:EventStream" />
+        <xs:element name="Extension" type="tt:MetadataStreamExtension" />
+        <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+      </xs:choice>
+    </xs:sequence>
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="MetadataStreamExtension">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax" />
+      <xs:element minOccurs="0" name="AudioAnalyticsStream" type="tt:AudioAnalyticsStream" />
+      <xs:element minOccurs="0" name="Extension" type="tt:MetadataStreamExtension2" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="MetadataStreamExtension2">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##targetNamespace" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="AudioAnalyticsStream">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AudioDescriptor" type="tt:AudioDescriptor" />
+      <xs:element minOccurs="0" name="Extension" type="tt:AudioAnalyticsStreamExtension" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="AudioDescriptor">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+    <xs:attribute name="UtcTime" type="xs:dateTime" use="required" />
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:complexType name="AudioAnalyticsStreamExtension">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+    <xs:anyAttribute processContents="lax" />
+  </xs:complexType>
+  <xs:element name="MetadataStream" type="tt:MetadataStream" />
+  <xs:complexType name="VideoAnalyticsStream">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="Frame" type="tt:Frame" />
+      <xs:element name="Extension" type="tt:VideoAnalyticsStreamExtension" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="VideoAnalyticsStreamExtension">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PTZStream">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="PTZStatus" type="tt:PTZStatus" />
+      <xs:element name="Extension" type="tt:PTZStreamExtension" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="PTZStreamExtension">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="EventStream">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element ref="wsnt:NotificationMessage" />
+      <xs:element name="Extension" type="tt:EventStreamExtension" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="EventStreamExtension">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" namespace="##any" processContents="lax" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

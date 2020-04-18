@@ -89,8 +89,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Onvif\Onvif.csproj">
-      <Project>{3F182356-906B-42F3-BFB4-35B04476D8E3}</Project>
+    <ProjectReference Include="Onvif\Onvif.csproj">
+      <Project>{3f182356-906b-42f3-bfb4-35b04476d8e3}</Project>
       <Name>Onvif</Name>
     </ProjectReference>
   </ItemGroup>
