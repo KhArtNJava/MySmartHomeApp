@@ -34,27 +34,21 @@ namespace MySmartHomeApp
             videoView1.MediaPlayer = _mp;
             Load += Form1_Load;
 
-            _mp.EnableMouseInput = false;
+            //_mp.Play(new Media(_libVLC, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", FromType.FromLocation));
 
-        }
 
-        private void videoView1_Click(object sender, EventArgs e)
-        {
 
-            OnvifCls.testPzt(serviceUrl);
-            Console.WriteLine();
+
         }
 
         string serviceUrl = "";
 
-        public int runMe(string rtspUrl, string serviceUrl )
+        public int runMe(string rtspUrl, string serviceUrl)
         {
             //Console.WriteLine(rtspUrl);
 
             this.serviceUrl = serviceUrl;
 
-            //_mp.Play(new Media(_libVLC, "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", FromType.FromLocation));
-            //_mp.Play(new Media(_libVLC, "rtsp://admin:q1234567@192.168.31.12:554/onvif1", FromType.FromLocation));
             _mp.Play(new Media(_libVLC, rtspUrl, FromType.FromLocation));
 
             _mp.EnableMouseInput = false;
@@ -76,26 +70,73 @@ namespace MySmartHomeApp
             }
 
 
-            loopTimer.Interval = 500; //interval in milliseconds
+            loopTimer.Interval = 100; //interval in milliseconds
             loopTimer.Enabled = false;
             loopTimer.Elapsed += loopTimerEvent;
             loopTimer.AutoReset = true;
 
         }
 
-        private static void loopTimerEvent(Object source, ElapsedEventArgs e)
+        void loopTimerEvent(Object source, ElapsedEventArgs e)
         {
-            //this does whatever you want to happen while clicking on the button
+            if (mouseDown)
+            {
+                float x = 0;
+                float y = 0;
+                if (clickX < senderMiddleX)
+                {
+                    x = -2f;
+                }
+                else if (clickX > senderMiddleX * 2)
+                {
+                    x = 2f;
+                }
+
+                if (clickY < senderMiddleY)
+                {
+                    y = 2f;
+                }
+                else if (clickY > senderMiddleY * 2)
+                {
+                    y = -2f;
+                }
+
+                OnvifCls.sendPtzMove(serviceUrl, x, y);
+            }
+
         }
 
-        private void videoView1_MouseDown(object sender, MouseEventArgs e)
+        int senderX;
+        int senderY;
+        int senderMiddleX;
+        int senderMiddleY;
+
+        int clickX;
+        int clickY;
+
+        bool mouseDown = false;
+
+        void videoView1_MouseDown(object sender, MouseEventArgs e)
         {
             loopTimer.Enabled = true;
+
+            mouseDown = true;
+
+            senderX = ((MyControl)sender).Width;
+            senderY = ((MyControl)sender).Height;
+            senderMiddleX = senderX / 3;
+            senderMiddleY = senderY / 3;
+
+            clickX = e.X;
+            clickY = e.Y;
+
         }
 
         private void videoView1_MouseUp(object sender, MouseEventArgs e)
         {
             loopTimer.Enabled = false;
+            mouseDown = false;
         }
+
     }
 }

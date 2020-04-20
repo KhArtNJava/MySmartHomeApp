@@ -31,6 +31,20 @@
             this.videoView1 = new LibVLCSharp.WinForms.VideoView();
             ((System.ComponentModel.ISupportInitialize)(this.videoView1)).BeginInit();
             this.SuspendLayout();
+
+            // myControl
+            // 
+            this.myControl = new MyControl();
+            this.myControl.BackColor = System.Drawing.Color.Transparent;
+            this.myControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.myControl.Location = new System.Drawing.Point(0, 0);
+            this.myControl.Name = "myControl";
+            this.myControl.Size = new System.Drawing.Size(800, 450);
+            this.myControl.TabIndex = 1;
+            this.Controls.Add(this.myControl);
+            this.myControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.videoView1_MouseDown);
+            this.myControl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.videoView1_MouseUp);
+
             // 
             // videoView1
             // 
@@ -44,9 +58,7 @@
             this.videoView1.Size = new System.Drawing.Size(797, 449);
             this.videoView1.TabIndex = 0;
             this.videoView1.Text = "videoView1";
-            this.videoView1.Click += new System.EventHandler(this.videoView1_Click);
-            this.videoView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.videoView1_MouseDown);
-            this.videoView1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.videoView1_MouseUp);
+            
             // 
             // Form1
             // 
@@ -60,11 +72,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.videoView1)).EndInit();
             this.ResumeLayout(false);
 
+          
+
         }
 
         #endregion
 
         private LibVLCSharp.WinForms.VideoView videoView1;
+        private MyControl myControl;
     }
 }
 

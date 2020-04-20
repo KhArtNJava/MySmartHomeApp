@@ -130,7 +130,7 @@ namespace Onvif
             Console.WriteLine();
         }
 
-        public static void testPzt(string serviceUrl)
+        public static void sendPtzMove(string serviceUrl, float x, float y)
         {
 
             System.Net.ServicePointManager.Expect100Continue = false;
@@ -151,10 +151,20 @@ namespace Onvif
             
             PTZSpeed velocity = new PTZSpeed();
             velocity.PanTilt = new Vector2D();
-            velocity.PanTilt.x = -0.5f;
-            velocity.PanTilt.y = 0f;
+            velocity.PanTilt.x = 0;
+            velocity.PanTilt.y = y;
 
-            cl.ContinuousMove("IPCProfilesToken0", velocity, "1");
+
+
+            cl.ContinuousMove("IPCProfilesToken0", velocity, "0.5");
+
+            velocity = new PTZSpeed();
+            velocity.PanTilt = new Vector2D();
+            velocity.PanTilt.x = x;
+            velocity.PanTilt.y = 0;
+
+
+            cl.ContinuousMove("IPCProfilesToken0", velocity, "0.5");
 
 
 
